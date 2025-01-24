@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My App</title>
+    <style>
+      input[type="range"] {
+        -webkit-appearance: none;
+
+        appearance: none;
+
+        width: 100%;
+
+        height: 20rem;
+
+        background: #222;
+
+        outline: none;
+
+        opacity: 0.7;
+
+        -webkit-transition: 0.2s;
+
+        transition: opacity 0.2s;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+
+        appearance: none;
+
+        width: 25px;
+
+        height: 44px;
+
+        background-image: url("/icon/thumb.jpg");
+        background-size: 1.55rem;
+        transform: scale(3);
+        background-position: center center;
+        background-repeat: no-repeat;
+        z-index: -100;
+
+        cursor: pointer;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track {
+        background: #000000;
+
+        cursor: pointer;
+      }
+    </style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="m-5 flex flex-row soundflex justify-evenly"></div>
+  </body>
+  <script>
+    $.ajax({
+      url: "/getRunningApps",
+      data: {},
+      success: function (result) {
+        console.log(result);
+        result.forEach((element) => {
+          $(".soundflex").append(
+            //-rotate-90 translate-y-36
+            `
+            <div class=" flex flex-col space-y-6 ">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="${element.volume * 100}"
+                class="rounded-none h-72 bg-white"
+                style="writing-mode: vertical-lr;direction: rtl;"
+                step="1"
+                name="${element.name}"
+                oninput="changeSound(this.name, this.value)"
+              />
+              <div class="avatar">
+                <div class="w-12 rounded">
+                  <img src="/icon/${element.icon}" />
+                </div>
+              </div>
+            </div>
+          `
+          );
+        });
+      },
+    });
+
+    function changeSound(appName, newVolume) {
+      console.log(appName + " " + newVolume / 100);
+      $.ajax({
+        url: "/volume/" + appName + "/" + newVolume / 100,
+        data: {},
+        success: function (result) {},
+      });
+    }
+  </script>
+</html>
