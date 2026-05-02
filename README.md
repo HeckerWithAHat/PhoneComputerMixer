@@ -1,4 +1,6 @@
-## PhoneComputerMixer: A custom-built virtual fader bank that automatically updates to include all active apps.
+## PhoneComputerMixer
+
+### A custom-built virtual fader bank that automatically updates to include all active apps.
 
 ## The Problem
 
